@@ -4,9 +4,16 @@
 #
 # Copyright:: 2025, The Authors, All Rights Reserved.
 
+# Update apt package cache for Debian/Ubuntu systems before installing packages!
+apt_update 'update package cache' do
+  action :nothing
+  only_if { platform_family?('debian', 'ubuntu') }
+end
+
 # Install httpd package
 package node['httpd']['package_name'] do
   action :install
+  notifies :update, 'apt_update[update package cache]', :before
 end
 
 # Enable httpd service to start on boot
