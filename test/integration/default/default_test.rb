@@ -3,14 +3,25 @@
 # The Chef InSpec reference, with examples and extensive documentation, can be
 # found at https://docs.chef.io/inspec/resources/
 
-unless os.windows?
-  # This is an example test, replace with your own test.
-  describe user('root'), :skip do
-    it { should exist }
-  end
+# Test that httpd service is running
+describe service('httpd') do
+  it { should be_installed }
+  it { should be_enabled }
+  it { should be_running }
 end
 
-# This is an example test, replace it with your own test.
-describe port(80), :skip do
-  it { should_not be_listening }
+# Test that port 80 is listening
+describe port(80) do
+  it { should be_listening }
+  its('protocols') { should include 'tcp' }
+end
+
+# Test that index.html exists
+describe file('/var/www/html/index.html') do
+  it { should exist }
+  it { should be_file }
+  its('owner') { should eq 'apache' }
+  its('group') { should eq 'apache' }
+  its('mode') { should cmp '0644' }
+  its('content') { should include 'Hello World' }
 end
