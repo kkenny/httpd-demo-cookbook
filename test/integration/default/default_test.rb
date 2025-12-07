@@ -3,8 +3,13 @@
 # The Chef InSpec reference, with examples and extensive documentation, can be
 # found at https://docs.chef.io/inspec/resources/
 
+# Determine platform-specific values for attributes
+service_name = os.family == 'redhat' ? 'httpd' : 'apache2'
+web_user = os.family == 'redhat' ? 'apache' : 'www-data'
+web_group = os.family == 'redhat' ? 'apache' : 'www-data'
+
 # Test that httpd service is running
-describe service('httpd') do
+describe service(service_name) do
   it { should be_installed }
   it { should be_enabled }
   it { should be_running }
@@ -20,8 +25,8 @@ end
 describe file('/var/www/html/index.html') do
   it { should exist }
   it { should be_file }
-  its('owner') { should eq 'apache' }
-  its('group') { should eq 'apache' }
+  its('owner') { should eq web_user }
+  its('group') { should eq web_group }
   its('mode') { should cmp '0644' }
   its('content') { should include 'Hello World' }
 end

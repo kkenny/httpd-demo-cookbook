@@ -24,6 +24,9 @@ platforms:
   - name: rockylinux-9
     driver:
       box: generic/rocky9
+  - name: ubuntu-22.04
+    driver:
+      box: generic/ubuntu2204
 
 suites:
   - name: default
