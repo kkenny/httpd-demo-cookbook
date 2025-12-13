@@ -1,3 +1,5 @@
+# DEMO
+
 # httpd
 
 This cookbook installs, enables, and starts the httpd service on RHEL 9, and creates an index.html file with "Hello World" content.
